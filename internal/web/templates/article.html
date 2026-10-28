@@ -1,0 +1,123 @@
+{{define "article.html"}}
+{{template "header" .}}
+{{with .Data}}
+<article class="article">
+  <header class="article-head">
+    <p class="meta">
+      <span class="tag">{{kindLabel .Kind}}</span>
+      <time>{{fmtDate .PublishedAt}}</time>
+      {{if gt .VersionNo.Int32 1}}<a class="corrected" href="#historico">Corrigido em {{fmtDate .VersionCreatedAt}}</a>{{end}}
+    </p>
+    <h1>{{text .Title}}</h1>
+    <p class="byline">
+      <a class="who" href="/j/{{.AuthorID}}">{{template "portrait" (portrait .AuthorName (text .AuthorAvatarUrl) "")}}<span class="who-name">{{.AuthorName}}</span></a>
+      {{if text .AuthorTagline}}<span>{{text .AuthorTagline}}</span>{{end}}
+    </p>
+    {{with .KindReason}}<p class="section-note">{{.}}</p>{{end}}
+  </header>
+
+  <p class="disclaimer" role="note">Conteúdo de responsabilidade exclusiva do autor. A plataforma não revisa nem atesta veracidade.</p>
+  <p class="to-text"><a href="#texto">Ler o texto</a></p>
+
+  <section class="sources" aria-labelledby="fontes-titulo">
+    <h2 id="fontes-titulo">Fontes <span>{{len .Sources}} no cadastro</span></h2>
+    <ol class="source-list">
+      {{range .Sources}}
+      <li>
+        <p class="source-outlet">
+          <strong>{{.OutletName}}</strong>
+          <span>{{hostOf .Url}}</span>
+          {{if eq .OutletStatus "suspended"}}<span class="flag">veículo suspenso do cadastro</span>{{end}}
+          {{if eq .OutletStatus "removed"}}<span class="flag">veículo removido do cadastro</span>{{end}}
+        </p>
+        <p class="source-title">{{if metaTitle .Meta}}{{metaTitle .Meta}}{{else}}{{.Excerpt}}{{end}}</p>
+        {{with hashStatusLabel .HashStatus}}<p class="flag">{{.}}</p>{{end}}
+        <blockquote><p>{{.Excerpt}}</p></blockquote>
+        <p class="source-actions">
+          <a class="btn" href="{{.Url}}" rel="noopener noreferrer">Consultar fonte</a>
+          {{if .ArchiveUrl.Valid}}<a class="quiet" href="{{.ArchiveUrl.String}}" rel="noopener noreferrer">Cópia arquivada</a>{{end}}
+        </p>
+      </li>
+      {{end}}
+    </ol>
+    {{if gt .ValidCount 0}}
+      <p class="eval">Avaliado por {{.ValidCount}} {{if eq .ValidCount 1}}jornalista{{else}}jornalistas{{end}} como fiel às fontes: {{pct .FaithfulCount .ValidCount}} ({{.FaithfulCount}} fiel · {{.DistortsCount}} distorce). Avaliação entre pares, não atestado da plataforma.</p>
+    {{else}}
+      <p class="eval">Ainda sem avaliações válidas entre pares.</p>
+    {{end}}
+    {{if not .EvaluationsOpen}}
+      <p class="notice">As fontes citadas não estão mais no ar. Novas avaliações ficam fechadas. As já feitas continuam valendo.</p>
+    {{end}}
+  </section>
+
+  {{if .Distortion}}
+  <aside class="notice" aria-labelledby="distorcao-titulo">
+    <h2 id="distorcao-titulo">Denúncia de distorção procedente</h2>
+    {{range .Distortion}}
+      <p>{{if .DecisionReason.Valid}}{{.DecisionReason.String}}{{end}}</p>
+      <p>Trecho apontado: “{{.Excerpt}}”</p>
+    {{end}}
+  </aside>
+  {{end}}
+
+  <div class="body" id="texto">
+    {{range .Body.Blocks}}
+      {{if eq .Type "p"}}<p>{{.Text}}</p>{{end}}
+    {{end}}
+  </div>
+
+  {{if .Replies}}
+  <section class="replies" aria-labelledby="resposta-titulo">
+    <h2 id="resposta-titulo">Direito de resposta</h2>
+    {{range .Replies}}
+      <figure class="reply">
+        <blockquote><p>{{.ReplyText}}</p></blockquote>
+        <figcaption>Resposta ao trecho “{{.Excerpt}}”, publicada em {{fmtDate .PublishedAt}}.</figcaption>
+      </figure>
+    {{end}}
+  </section>
+  {{end}}
+
+  {{if .Comments}}
+  <section class="debate" aria-labelledby="debate-titulo">
+    <h2 id="debate-titulo">Debate profissional</h2>
+    <p class="section-note">Flags de comentário (concordo / discordo) não entram no score de fidelidade.</p>
+    <ol class="comments">
+      {{range .Comments}}
+      <li>
+        <p class="comment-meta"><a class="who" href="/j/{{.AuthorID}}">{{template "portrait" (portrait .AuthorName (text .AuthorAvatarUrl) "")}}<span class="who-name">{{.AuthorName}}</span></a> <span class="tag">{{stanceLabel .Stance}}</span> <time>{{fmtDateTime .CreatedAt}}</time></p>
+        <p>{{.Body}}</p>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  {{if gt (len .Versions) 1}}
+  <section id="historico" class="history" aria-labelledby="historico-titulo">
+    <h2 id="historico-titulo">Histórico público</h2>
+    <ol class="timeline">
+      {{range .Versions}}
+      <li>
+        <p><strong>Versão {{.VersionNo}}</strong> · {{fmtDateTime .CreatedAt}}{{if .ChangeNote.Valid}} — {{.ChangeNote.String}}{{end}}</p>
+      </li>
+      {{end}}
+    </ol>
+  </section>
+  {{end}}
+
+  <aside class="author-card" aria-labelledby="autor-titulo">
+    <h2 id="autor-titulo">Autor</h2>
+    <div class="author-card-body">
+      {{template "portrait" (portrait .AuthorName (text .AuthorAvatarUrl) "lg")}}
+      <div>
+        <p class="author-name"><a href="/j/{{.AuthorID}}">{{.AuthorName}}</a></p>
+        {{if text .AuthorTagline}}<p>{{text .AuthorTagline}}</p>{{end}}
+      </div>
+    </div>
+    <p class="author-card-action"><a class="btn" href="/j/{{.AuthorID}}">Ver perfil</a></p>
+  </aside>
+</article>
+{{end}}
+{{template "footer" .}}
+{{end}}

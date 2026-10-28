@@ -1,0 +1,16 @@
+{
+	auto_https off
+	admin off
+}
+
+:80 {
+	encode gzip
+	request_body {
+		max_size 1MB
+	}
+	reverse_proxy jcf-web:8080 {
+		header_up Host {http.request.hostport}
+		header_up X-Forwarded-Proto {scheme}
+		header_up X-Real-IP {remote_host}
+	}
+}

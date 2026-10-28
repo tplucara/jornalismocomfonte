@@ -1,0 +1,67 @@
+{{define "signup.html"}}
+{{template "header" .}}
+<article class="article">
+  <h1>Criar conta</h1>
+  <p class="lede">A conta é de jornalista. O público lê sem cadastro. Criar a conta não publica e não avalia: a identidade passa por revisão humana.</p>
+  {{if .Data.ErrForm}}<p class="form-error" role="alert">{{.Data.ErrForm}}</p>{{end}}
+  <form class="account-form" method="post" action="/cadastro" accept-charset="utf-8">
+    <div>
+      <label for="display_name">Nome público</label>
+      <input id="display_name" name="display_name" required maxlength="80" autocomplete="name" value="{{.Data.Name}}" {{if .Data.ErrName}}aria-invalid="true" aria-describedby="err-name"{{end}}>
+      {{with .Data.ErrName}}<p class="field-error" id="err-name">{{.}}</p>{{end}}
+    </div>
+    <div>
+      <label for="tagline">Frase de impacto <span class="optional">(opcional)</span></label>
+      <input id="tagline" name="tagline" maxlength="140" autocomplete="off" value="{{.Data.Tagline}}" {{if .Data.ErrTagline}}aria-invalid="true" aria-describedby="err-tagline"{{end}}>
+      {{with .Data.ErrTagline}}<p class="field-error" id="err-tagline">{{.}}</p>{{end}}
+    </div>
+    <div>
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" required maxlength="254" autocomplete="email" spellcheck="false" value="{{.Data.Email}}" {{if .Data.ErrEmail}}aria-invalid="true" aria-describedby="err-email"{{end}}>
+      <p class="hint">O e-mail não aparece no perfil.</p>
+      {{with .Data.ErrEmail}}<p class="field-error" id="err-email">{{.}}</p>{{end}}
+    </div>
+    <div>
+      <label for="password">Senha</label>
+      <input id="password" name="password" type="password" required minlength="12" maxlength="128" autocomplete="new-password" {{if .Data.ErrPassword}}aria-invalid="true" aria-describedby="err-password"{{end}}>
+      <p class="hint">Pelo menos 12 caracteres.</p>
+    </div>
+    <div>
+      <label for="password_confirm">Confirmar senha</label>
+      <input id="password_confirm" name="password_confirm" type="password" required minlength="12" maxlength="128" autocomplete="new-password">
+      {{with .Data.ErrPassword}}<p class="field-error" id="err-password">{{.}}</p>{{end}}
+    </div>
+    <fieldset>
+      <legend>Aceite</legend>
+      <div class="check">
+        <input type="checkbox" id="adult" name="adult" value="on" {{if .Data.Adult}}checked{{end}} {{if .Data.ErrAdult}}aria-invalid="true" aria-describedby="err-adult"{{end}}>
+        <label for="adult">Declaro que tenho 18 anos ou mais.</label>
+      </div>
+      {{with .Data.ErrAdult}}<p class="field-error" id="err-adult">{{.}}</p>{{end}}
+      <div class="check">
+        <input type="checkbox" id="accept_terms" name="accept_terms" value="on" {{if .Data.Terms}}checked{{end}} {{if .Data.ErrTerms}}aria-invalid="true" aria-describedby="err-terms"{{end}}>
+        <label for="accept_terms">Li e aceito os <a href="/termos">termos de uso</a>.</label>
+      </div>
+      {{with .Data.ErrTerms}}<p class="field-error" id="err-terms">{{.}}</p>{{end}}
+      <div class="check">
+        <input type="checkbox" id="accept_privacy" name="accept_privacy" value="on" {{if .Data.Privacy}}checked{{end}} {{if .Data.ErrPrivacy}}aria-invalid="true" aria-describedby="err-privacy"{{end}}>
+        <label for="accept_privacy">Li e aceito a <a href="/privacidade">política de privacidade</a>.</label>
+      </div>
+      {{with .Data.ErrPrivacy}}<p class="field-error" id="err-privacy">{{.}}</p>{{end}}
+      <div class="check">
+        <input type="checkbox" id="accept_content" name="accept_content" value="on" {{if .Data.Content}}checked{{end}} {{if .Data.ErrContent}}aria-invalid="true" aria-describedby="err-content"{{end}}>
+        <label for="accept_content">Li e aceito a <a href="/conteudo">política de conteúdo e remoção</a>.</label>
+      </div>
+      {{with .Data.ErrContent}}<p class="field-error" id="err-content">{{.}}</p>{{end}}
+    </fieldset>
+    <div class="check remember">
+      <input type="checkbox" id="remember" name="remember" value="on" {{if .Data.Remember}}checked{{end}}>
+      <label for="remember">Lembrar neste aparelho</label>
+    </div>
+    <p class="hint">O cookie permanece ao fechar o navegador. Sem uso por 12 horas, é preciso entrar de novo. O prazo máximo é 30 dias.</p>
+    <button type="submit" class="btn">Criar conta</button>
+  </form>
+  <p class="quiet"><a href="/entrar">Já tenho conta</a></p>
+</article>
+{{template "footer" .}}
+{{end}}

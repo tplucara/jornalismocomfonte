@@ -1,0 +1,56 @@
+{{define "publish.html"}}
+{{template "header" .}}
+<article class="article">
+  <h1>Escrever</h1>
+  <p class="lede">Toda publicação precisa de 1 a 3 reportagens de veículos do cadastro. A plataforma não revisa nem atesta veracidade.</p>
+  {{with .Data.ErrForm}}<p class="form-error" role="alert">{{.}}</p>{{end}}
+  <form class="account-form" method="post" action="/escrever" accept-charset="utf-8">
+    <p>
+      <label for="title">Título</label>
+      <input id="title" name="title" type="text" required maxlength="200" value="{{.Data.Title}}">
+    </p>
+    <p>
+      <label for="kind">Tag</label>
+      <select id="kind" name="kind" required>
+        <option value="report" {{if eq .Data.Kind "report"}}selected{{end}}>Reportagem</option>
+        <option value="analysis" {{if eq .Data.Kind "analysis"}}selected{{end}}>Análise</option>
+        <option value="opinion" {{if eq .Data.Kind "opinion"}}selected{{end}}>Opinião</option>
+      </select>
+    </p>
+    <p>
+      <label for="body">Texto</label>
+      <textarea id="body" name="body" required rows="16" maxlength="50000">{{.Data.Body}}</textarea>
+      <span class="hint">Parágrafos separados por linha em branco. Sem HTML.</span>
+    </p>
+    <fieldset>
+      <legend>Fontes (1 a 3)</legend>
+      <p>
+        <label for="source_url_1">URL da fonte 1</label>
+        <input id="source_url_1" name="source_url_1" type="url" required value="{{.Data.URL1}}" placeholder="https://…">
+      </p>
+      <p>
+        <label for="source_excerpt_1">Trecho citado (até 300 caracteres)</label>
+        <input id="source_excerpt_1" name="source_excerpt_1" type="text" required maxlength="300" value="{{.Data.Excerpt1}}">
+      </p>
+      <p>
+        <label for="source_url_2">URL da fonte 2 (opcional)</label>
+        <input id="source_url_2" name="source_url_2" type="url" value="{{.Data.URL2}}">
+      </p>
+      <p>
+        <label for="source_excerpt_2">Trecho da fonte 2</label>
+        <input id="source_excerpt_2" name="source_excerpt_2" type="text" maxlength="300" value="{{.Data.Excerpt2}}">
+      </p>
+      <p>
+        <label for="source_url_3">URL da fonte 3 (opcional)</label>
+        <input id="source_url_3" name="source_url_3" type="url" value="{{.Data.URL3}}">
+      </p>
+      <p>
+        <label for="source_excerpt_3">Trecho da fonte 3</label>
+        <input id="source_excerpt_3" name="source_excerpt_3" type="text" maxlength="300" value="{{.Data.Excerpt3}}">
+      </p>
+    </fieldset>
+    <p><button type="submit" class="btn">Publicar</button></p>
+  </form>
+</article>
+{{template "footer" .}}
+{{end}}

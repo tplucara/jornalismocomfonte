@@ -1,0 +1,41 @@
+{{define "feed.html"}}
+{{template "header" .}}
+<header class="page-head front">
+  <h1>Início</h1>
+  <p class="lede">Do dia mais recente para o mais antigo. No mesmo dia, primeiro a matéria com mais avaliações válidas. A plataforma não revisa nem atesta veracidade.</p>
+</header>
+
+{{with .Data}}
+{{if not .Articles}}
+  <p class="empty">Ainda não há publicações.</p>
+{{else}}
+  <ol class="feed{{if eq .Page 1}} front-grid{{end}}">
+    {{range $i, $a := .Articles}}
+    <li{{if and (eq $.Data.Page 1) (eq $i 0)}} class="lead"{{end}}>
+      <article>
+        <p class="meta">
+          <span class="tag">{{kindLabel $a.Kind}}</span>
+          <time>{{fmtDate $a.PublishedAt}}</time>
+        </p>
+        <h2><a href="/a/{{$a.ID}}">{{$a.Title}}</a></h2>
+        <p class="byline">
+          <a class="who" href="/j/{{$a.AuthorID}}">{{template "portrait" (portrait $a.AuthorName (text $a.AuthorAvatarUrl) "")}}<span class="who-name">{{$a.AuthorName}}</span></a>
+        </p>
+        <p class="sources-count">{{$a.SourceCount}} {{if eq $a.SourceCount 1}}fonte{{else}}fontes{{end}} no cadastro
+          {{if gt $a.ValidCount 0}} · avaliado por {{$a.ValidCount}} {{if eq $a.ValidCount 1}}jornalista{{else}}jornalistas{{end}}: {{pct $a.FaithfulCount $a.ValidCount}} fiel às fontes{{end}}
+        </p>
+      </article>
+    </li>
+    {{end}}
+  </ol>
+  {{if or .HasPrev .HasNext}}
+  <nav class="pager" aria-label="Paginação">
+    {{if .HasPrev}}<a href="/?p={{sub .Page 1}}">Página anterior</a>{{end}}
+    <span aria-current="page">Página {{.Page}}</span>
+    {{if .HasNext}}<a href="/?p={{add .Page 1}}">Próxima página</a>{{end}}
+  </nav>
+  {{end}}
+{{end}}
+{{end}}
+{{template "footer" .}}
+{{end}}

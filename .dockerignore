@@ -1,0 +1,10 @@
+.git
+.cursor
+.env
+*.local
+/bin
+/tmp
+agent-transcripts
+docs
+README.md
+**/*_test.go

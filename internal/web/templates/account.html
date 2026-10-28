@@ -1,0 +1,72 @@
+{{define "account.html"}}
+{{template "header" .}}
+<article class="article">
+  <h1>Sua conta</h1>
+  {{with .Data.Flash}}<p class="form-note" role="status">{{.}}</p>{{end}}
+  <p>{{.Data.Status}}</p>
+  <div class="account-portrait">
+    {{template "portrait" (portrait .Data.Name .Data.Avatar "")}}
+  </div>
+  <dl class="account-facts">
+    <dt>Nome público</dt>
+    <dd>{{.Data.Name}}</dd>
+    {{with .Data.Tagline}}<dt>Frase de impacto</dt><dd>{{.}}</dd>{{end}}
+    <dt>E-mail</dt>
+    <dd>{{.Data.Email}}</dd>
+  </dl>
+  <p class="hint">O e-mail fica nesta tela. No perfil público aparecem o nome, a frase e, quando houver, a foto.</p>
+
+  <section class="account-block" aria-labelledby="foto-titulo">
+    <h2 id="foto-titulo">Foto de perfil</h2>
+    <form class="account-form" method="post" action="/conta/foto" enctype="multipart/form-data">
+      <p>
+        <label for="avatar">Arquivo (JPEG ou PNG, até 5&nbsp;MiB)</label>
+        <input id="avatar" name="avatar" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png" required>
+        <span class="hint">No iPhone, use “Arquivos” ou exporte como JPEG — HEIC e WebP não entram.</span>
+      </p>
+      <p><button type="submit" class="btn">Enviar foto</button></p>
+    </form>
+  </section>
+
+  {{if .Data.Pending}}
+  <section class="account-block" aria-labelledby="prova-titulo">
+    <h2 id="prova-titulo">Comprovante de jornalista</h2>
+    {{if .Data.ProofPending}}
+      <p>Há um comprovante em análise.</p>
+    {{else}}
+      <form class="account-form" method="post" action="/conta/comprovante" enctype="multipart/form-data">
+        <p>
+          <label for="method">Tipo</label>
+          <select id="method" name="method" required>
+            <option value="professional_registry">Registro profissional</option>
+            <option value="outlet_affiliation">Vínculo com veículo cadastrado</option>
+            <option value="portfolio">Portfólio em veículos cadastrados</option>
+          </select>
+        </p>
+        <p>
+          <label for="proof">Arquivo (PDF, JPEG ou PNG, até 2&nbsp;MiB)</label>
+          <input id="proof" name="proof" type="file" accept=".pdf,image/jpeg,image/png,application/pdf" required>
+        </p>
+        <p>
+          <label for="note">Nota opcional</label>
+          <input id="note" name="note" type="text" maxlength="200">
+        </p>
+        <p><button type="submit" class="btn">Enviar comprovante</button></p>
+      </form>
+    {{end}}
+  </section>
+  {{end}}
+
+  {{if .Data.Verified}}
+  <p><a class="btn" href="/escrever">Escrever publicação</a></p>
+  {{end}}
+  {{if .Data.Staff}}
+  <p><a href="/equipe/verificacoes">Revisar verificações</a></p>
+  {{end}}
+
+  <form method="post" action="/sair">
+    <button type="submit" class="btn btn-quiet">Sair</button>
+  </form>
+</article>
+{{template "footer" .}}
+{{end}}

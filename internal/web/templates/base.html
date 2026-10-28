@@ -1,0 +1,176 @@
+{{define "portrait"}}
+{{if .URL}}<img class="avatar {{.Class}}" src="{{.URL}}" alt="" width="80" height="80">{{else}}<span class="avatar {{.Class}}" aria-hidden="true">{{.Initials}}</span>{{end}}
+{{end}}
+
+{{define "header"}}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#efeae2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#3a3a3a" media="(prefers-color-scheme: dark)">
+  <script nonce="{{.Nonce}}">
+    (function () {
+      var key = "jcf-theme";
+      var cbKey = "jcf-cb";
+      var year = 365 * 24 * 60 * 60 * 1000;
+      var root = document.documentElement;
+      function read() {
+        try {
+          var data = JSON.parse(localStorage.getItem(key) || "");
+          if (!data || (data.theme !== "light" && data.theme !== "dark")) return "";
+          if (Date.now() > data.exp) { localStorage.removeItem(key); return ""; }
+          return data.theme;
+        } catch (e) { return ""; }
+      }
+      function readCb() {
+        try {
+          var data = JSON.parse(localStorage.getItem(cbKey) || "");
+          if (!data || data.on !== true) return false;
+          if (Date.now() > data.exp) { localStorage.removeItem(cbKey); return false; }
+          return true;
+        } catch (e) { return false; }
+      }
+      function systemDark() {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches;
+      }
+      function resolved() {
+        var chosen = root.getAttribute("data-theme");
+        if (chosen === "light" || chosen === "dark") return chosen;
+        return systemDark() ? "dark" : "light";
+      }
+      function paint(theme) {
+        var light = "#efeae2";
+        var dark = "#3a3a3a";
+        var nodes = document.querySelectorAll('meta[name="theme-color"]');
+        if (theme === "light" || theme === "dark") {
+          var color = theme === "dark" ? dark : light;
+          for (var i = 0; i < nodes.length; i++) nodes[i].setAttribute("content", color);
+          return;
+        }
+        if (nodes[0]) nodes[0].setAttribute("content", light);
+        if (nodes[1]) nodes[1].setAttribute("content", dark);
+      }
+      function applyCb(on) {
+        if (on) root.setAttribute("data-cb", "on");
+        else root.removeAttribute("data-cb");
+      }
+      var saved = read();
+      if (saved) {
+        root.setAttribute("data-theme", saved);
+        paint(saved);
+      }
+      if (readCb()) applyCb(true);
+      function sync() {
+        var btn = document.querySelector(".theme-toggle");
+        if (btn) {
+          var now = resolved();
+          btn.setAttribute("aria-label", now === "dark" ? "Ativar tema claro" : "Ativar tema escuro");
+          btn.hidden = false;
+        }
+        var cb = document.querySelector(".cb-toggle");
+        if (!cb) return;
+        var on = root.getAttribute("data-cb") === "on";
+        cb.setAttribute("aria-pressed", on ? "true" : "false");
+        cb.setAttribute("aria-label", on ? "Desativar modo para daltonismo" : "Ativar modo para daltonismo");
+        cb.hidden = false;
+      }
+      function toggleCb() {
+        var on = root.getAttribute("data-cb") !== "on";
+        applyCb(on);
+        try {
+          if (on) localStorage.setItem(cbKey, JSON.stringify({ on: true, exp: Date.now() + year }));
+          else localStorage.removeItem(cbKey);
+        } catch (e) {}
+        sync();
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        sync();
+        var btn = document.querySelector(".theme-toggle");
+        if (btn) btn.addEventListener("click", function () {
+          var next = resolved() === "dark" ? "light" : "dark";
+          try { localStorage.setItem(key, JSON.stringify({ theme: next, exp: Date.now() + year })); } catch (e) {}
+          root.setAttribute("data-theme", next);
+          paint(next);
+          sync();
+        });
+        var cb = document.querySelector(".cb-toggle");
+        if (cb) cb.addEventListener("click", toggleCb);
+      });
+      document.addEventListener("keydown", function (ev) {
+        if (!ev.altKey || !ev.shiftKey || (ev.key !== "C" && ev.key !== "c")) return;
+        var tag = ev.target && ev.target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+        ev.preventDefault();
+        toggleCb();
+      });
+      var mq = window.matchMedia("(prefers-color-scheme: dark)");
+      if (mq.addEventListener) mq.addEventListener("change", function () { if (!read()) sync(); });
+    })();
+  </script>
+  <title>{{if .Title}}{{.Title}} — {{end}}Jornalismo com Fonte</title>
+  {{if .Description}}<meta name="description" content="{{.Description}}">{{end}}
+  {{if .Robots}}<meta name="robots" content="{{.Robots}}">{{end}}
+  <link rel="stylesheet" href="/static/app.css?v=20">
+  {{if .JSONLD}}<script type="application/ld+json" nonce="{{.Nonce}}">{{.JSONLD}}</script>{{end}}
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+  <header class="masthead">
+    <div class="wrap">
+      <p class="mast-kicker">Toda notícia aponta sua fonte</p>
+      <p class="brand"><a href="/">Jornalismo <em>com Fonte</em></a></p>
+      <div class="mast-row">
+      <nav aria-label="Principal">
+        <ul>
+          <li><a href="/" {{if eq .Path "/"}}aria-current="page"{{end}}>Início</a></li>
+          <li><a href="/fontes" {{if or (eq .Path "/fontes") (eq .Path "/lista-branca")}}aria-current="page"{{end}}>Veículos</a></li>
+          <li><a href="/busca" {{if eq .Path "/busca"}}aria-current="page"{{end}}>Busca</a></li>
+          <li><a href="/sobre" {{if eq .Path "/sobre"}}aria-current="page"{{end}}>Sobre</a></li>
+          <li><a href="/escrever" {{if eq .Path "/escrever"}}aria-current="page"{{end}}>Escrever</a></li>
+          <li><a href="/conta" {{if or (eq .Path "/conta") (eq .Path "/cadastro") (eq .Path "/entrar") (eq .Path "/equipe/verificacoes")}}aria-current="page"{{end}}>Conta</a></li>
+        </ul>
+      </nav>
+      <div class="mast-tools">
+      <button type="button" class="icon-btn cb-toggle" hidden aria-pressed="false" aria-keyshortcuts="Alt+Shift+C" aria-label="Ativar modo para daltonismo">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+          <circle cx="9" cy="12" r="5.25" fill="none" stroke="currentColor" stroke-width="1.75"/>
+          <circle cx="15" cy="12" r="5.25" fill="none" stroke="currentColor" stroke-width="1.75"/>
+        </svg>
+      </button>
+      <button type="button" class="icon-btn theme-toggle" hidden aria-label="Ativar tema escuro">
+        <svg class="icon icon-moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+          <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5z" fill="currentColor"/>
+        </svg>
+        <svg class="icon icon-sun" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/>
+          <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4 19 19M19 5l-1.6 1.6M6.6 17.4 5 19" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+        </svg>
+      </button>
+      </div>
+    </div>
+  </header>
+  <main id="conteudo" class="wrap">
+{{end}}
+
+{{define "footer"}}
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="footer-brand">Jornalismo <em>com Fonte</em></p>
+      <p>Espaço técnico de publicação operado pela Anvil Software LTDA. Não é um jornal e não atesta veracidade.</p>
+      <nav aria-label="Documentos legais">
+        <ul>
+          <li><a href="/termos">Termos de uso</a></li>
+          <li><a href="/privacidade">Privacidade</a></li>
+          <li><a href="/conteudo">Conteúdo e remoção</a></li>
+          <li><a href="/seguranca">Segurança</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
+{{end}}

@@ -1,0 +1,14 @@
+{{define "article_removed.html"}}
+{{template "header" .}}
+{{with .Data}}
+<article class="article">
+  <h1>Conteúdo removido</h1>
+  <p class="disclaimer" role="note">O rastro desta publicação é preservado. O texto original não é exibido.</p>
+  <p>Removido por {{removalReasonLabel .RemovalReason}} em {{fmtDate .RemovedAt}}.</p>
+  {{if eq .Status "author_deleted"}}
+    <p>O autor retirou a publicação.</p>
+  {{end}}
+</article>
+{{end}}
+{{template "footer" .}}
+{{end}}

@@ -1,0 +1,8 @@
+.env
+*.local
+/bin/
+/tmp/
+coverage.out
+
+.tmp-*
+.cursor/rules/

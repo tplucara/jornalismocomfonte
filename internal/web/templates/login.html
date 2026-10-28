@@ -1,0 +1,26 @@
+{{define "login.html"}}
+{{template "header" .}}
+<article class="article">
+  <h1>Entrar</h1>
+  <p class="lede">Conta de jornalista. O público lê sem entrar.</p>
+  {{if .Data.ErrForm}}<p class="form-error" role="alert">{{.Data.ErrForm}}</p>{{end}}
+  <form class="account-form" method="post" action="/entrar" accept-charset="utf-8">
+    <div>
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" required maxlength="254" autocomplete="email" spellcheck="false" value="{{.Data.Email}}" {{if .Data.ErrForm}}aria-invalid="true"{{end}}>
+    </div>
+    <div>
+      <label for="password">Senha</label>
+      <input id="password" name="password" type="password" required autocomplete="current-password" {{if .Data.ErrForm}}aria-invalid="true"{{end}}>
+    </div>
+    <div class="check remember">
+      <input type="checkbox" id="remember" name="remember" value="on" {{if .Data.Remember}}checked{{end}}>
+      <label for="remember">Lembrar neste aparelho</label>
+    </div>
+    <p class="hint">O cookie permanece ao fechar o navegador. Sem uso por 12 horas, é preciso entrar de novo. O prazo máximo é 30 dias.</p>
+    <button type="submit" class="btn">Entrar</button>
+  </form>
+  <p class="quiet"><a href="/cadastro">Criar conta</a></p>
+</article>
+{{template "footer" .}}
+{{end}}

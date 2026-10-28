@@ -1,0 +1,64 @@
+{{define "profile.html"}}
+{{template "header" .}}
+{{with .Data}}
+<article class="profile">
+  <header class="identity">
+    {{template "portrait" (portrait .DisplayName (text .AvatarUrl) "lg")}}
+    <div>
+      <h1>{{.DisplayName}}</h1>
+      {{with journalistStatusLabel .Status}}<p class="seal">{{.}}</p>{{end}}
+      {{if text .Tagline}}<p class="lede">{{text .Tagline}}</p>{{end}}
+    </div>
+  </header>
+
+  <section class="reputation" aria-labelledby="rep-titulo">
+    <h2 id="rep-titulo">Avaliação entre pares</h2>
+    <p class="section-note">Não é um índice de veracidade. A plataforma não atesta o conteúdo.</p>
+    {{if .HasReputation}}
+      <div class="scoreboard">
+        <section>
+          <h3>Autor</h3>
+          {{if .Author.Insufficient}}
+            <p class="score-empty">Amostra insuficiente.</p>
+          {{else}}
+            <p class="score">{{.Author.ScorePct}}<span>%</span></p>
+            <p>fiel às fontes</p>
+            <p class="meta">intervalo {{.Author.CILowPct}}–{{.Author.CIHighPct}}% · {{.Author.NValid}} avaliações válidas</p>
+          {{end}}
+        </section>
+        <section>
+          <h3>Avaliador</h3>
+          {{if .Reviewer.Insufficient}}
+            <p class="score-empty">Amostra insuficiente.</p>
+          {{else}}
+            <p class="score">{{.Reviewer.ScorePct}}<span>%</span></p>
+            <p>participação válida</p>
+            <p class="meta">intervalo {{.Reviewer.CILowPct}}–{{.Reviewer.CIHighPct}}% · {{.Reviewer.NValid}} participações</p>
+          {{end}}
+        </section>
+      </div>
+    {{else}}
+      <p class="score-empty">Amostra insuficiente.</p>
+    {{end}}
+  </section>
+
+  <section aria-labelledby="artigos-titulo">
+    <h2 id="artigos-titulo">Publicações</h2>
+    {{if not .Articles}}
+      <p class="empty">Nenhuma publicação visível.</p>
+    {{else}}
+      <ol class="stories">
+        {{range .Articles}}
+        <li>
+          <p class="meta"><span class="tag">{{kindLabel .Kind}}</span> <time>{{fmtDate .PublishedAt}}</time></p>
+          <h3><a href="/a/{{.ID}}">{{.Title}}</a></h3>
+          {{if gt .ValidCount 0}}<p class="sources-count">{{pct .FaithfulCount .ValidCount}} fiel às fontes · {{.ValidCount}} {{if eq .ValidCount 1}}avaliação{{else}}avaliações{{end}}</p>{{end}}
+        </li>
+        {{end}}
+      </ol>
+    {{end}}
+  </section>
+</article>
+{{end}}
+{{template "footer" .}}
+{{end}}

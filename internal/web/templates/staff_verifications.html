@@ -1,0 +1,32 @@
+{{define "staff_verifications.html"}}
+{{template "header" .}}
+<article class="article">
+  <h1>Verificações pendentes</h1>
+  <p class="lede">Revisão humana da identidade. O arquivo bruto é descartado após a decisão.</p>
+  {{with .Data.Flash}}<p class="form-note" role="status">{{.}}</p>{{end}}
+  {{if not .Data.Rows}}
+    <p class="empty">Nenhum pedido em aberto.</p>
+  {{else}}
+    <ul class="feed">
+      {{range .Data.Rows}}
+      <li>
+        <p><strong>{{.DisplayName}}</strong> · {{.Email}}</p>
+        <p class="meta">Método: {{.Method}} · enviado {{fmtDateTime .SubmittedAt}}</p>
+        <form class="account-form" method="post" action="/equipe/verificacoes">
+          <input type="hidden" name="id" value="{{.ID}}">
+          <p>
+            <label for="reason-{{.ID}}">Motivo</label>
+            <input id="reason-{{.ID}}" name="reason" type="text" required maxlength="500">
+          </p>
+          <p>
+            <button type="submit" name="decision" value="approved" class="btn">Aprovar</button>
+            <button type="submit" name="decision" value="rejected" class="btn btn-quiet">Recusar</button>
+          </p>
+        </form>
+      </li>
+      {{end}}
+    </ul>
+  {{end}}
+</article>
+{{template "footer" .}}
+{{end}}

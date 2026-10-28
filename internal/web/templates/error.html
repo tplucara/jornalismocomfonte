@@ -1,0 +1,7 @@
+{{define "error.html"}}
+{{template "header" .}}
+<h1>{{.Data.Message}}</h1>
+<p>{{if eq .Data.Status 404}}O endereço não existe ou o conteúdo não está disponível.{{else if eq .Data.Status 400}}A solicitação não pôde ser atendida.{{else}}Tente de novo em instantes. Se o problema continuar, o detalhe fica só no registro interno.{{end}}</p>
+<p><a href="/">Voltar ao início</a></p>
+{{template "footer" .}}
+{{end}}

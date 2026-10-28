@@ -1,0 +1,94 @@
+{{define "search.html"}}
+{{template "header" .}}
+<header class="page-head">
+  <h1>Busca</h1>
+  <p class="lede">Os resultados saem da mais recente para a mais antiga.</p>
+</header>
+
+{{with .Data}}
+<form class="search-form" action="/busca" method="get" role="search">
+  <div class="search-broad">
+    <label for="q">Título, texto, jornalista ou veículo</label>
+    <input id="q" name="q" type="search" maxlength="120" value="{{.Q}}" placeholder="Ex.: inflação de alimentos">
+    <button class="btn" type="submit">Buscar</button>
+  </div>
+  <details class="advanced"{{if .Advanced}} open{{end}}>
+    <summary>Busca avançada</summary>
+    <div class="filters">
+      <div>
+        <label for="tipo">Tipo</label>
+        <select id="tipo" name="tipo">
+          <option value="">Todos</option>
+          <option value="report" {{if eq .Kind "report"}}selected{{end}}>Reportagem</option>
+          <option value="analysis" {{if eq .Kind "analysis"}}selected{{end}}>Análise</option>
+          <option value="opinion" {{if eq .Kind "opinion"}}selected{{end}}>Opinião</option>
+        </select>
+      </div>
+      <div>
+        <label for="jornalista">Jornalista</label>
+        <select id="jornalista" name="jornalista">
+          <option value="">Todos</option>
+          {{range .Authors}}
+          <option value="{{.ID}}" {{if eq .ID $.Data.AuthorID}}selected{{end}}>{{.DisplayName}}</option>
+          {{end}}
+        </select>
+      </div>
+      <div>
+        <label for="veiculo">Veículo citado</label>
+        <select id="veiculo" name="veiculo">
+          <option value="">Todos</option>
+          {{range .Outlets}}
+          <option value="{{.ID}}" {{if eq .ID $.Data.OutletID}}selected{{end}}>{{.Name}}</option>
+          {{end}}
+        </select>
+      </div>
+      <div>
+        <label for="de">Publicado a partir de</label>
+        <input id="de" name="de" type="date" value="{{.From}}">
+      </div>
+      <div>
+        <label for="ate">Publicado até</label>
+        <input id="ate" name="ate" type="date" value="{{.To}}">
+      </div>
+    </div>
+    <p class="search-actions">
+      <button class="btn" type="submit">Buscar com filtros</button>
+      <a href="{{.ClearAdvancedHref}}">Limpar filtros</a>
+    </p>
+  </details>
+</form>
+
+{{if .Articles}}
+  <p class="result-count">{{.MatchCount}} {{if eq .MatchCount 1}}publicação{{else}}publicações{{end}}</p>
+  <ol class="feed">
+    {{range .Articles}}
+    <li>
+      <article>
+        <p class="meta">
+          <span class="tag">{{kindLabel .Kind}}</span>
+          <time>{{fmtDate .PublishedAt}}</time>
+        </p>
+        <h2><a href="/a/{{.ID}}">{{.Title}}</a></h2>
+        <p class="byline">
+          <a class="who" href="/j/{{.AuthorID}}">{{template "portrait" (portrait .AuthorName (text .AuthorAvatarUrl) "")}}<span class="who-name">{{.AuthorName}}</span></a>
+        </p>
+        <p class="sources-count">{{.SourceCount}} {{if eq .SourceCount 1}}fonte{{else}}fontes{{end}} no cadastro
+          {{if gt .ValidCount 0}} · avaliado por {{.ValidCount}} {{if eq .ValidCount 1}}jornalista{{else}}jornalistas{{end}}: {{pct .FaithfulCount .ValidCount}} fiel às fontes{{end}}
+        </p>
+      </article>
+    </li>
+    {{end}}
+  </ol>
+  {{if or .HasPrev .HasNext}}
+  <nav class="pager" aria-label="Paginação">
+    {{if .HasPrev}}<a href="{{.PageHref (sub .Page 1)}}">Página anterior</a>{{end}}
+    <span aria-current="page">Página {{.Page}}</span>
+    {{if .HasNext}}<a href="{{.PageHref (add .Page 1)}}">Próxima página</a>{{end}}
+  </nav>
+  {{end}}
+{{else}}
+  <p class="empty">Nenhuma publicação encontrada.</p>
+{{end}}
+{{end}}
+{{template "footer" .}}
+{{end}}

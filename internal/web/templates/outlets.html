@@ -1,0 +1,43 @@
+{{define "outlets.html"}}
+{{template "header" .}}
+<header class="page-head">
+  <h1>Cadastro de veículos</h1>
+  <p class="lede">Veículos de comunicação que podem ser citados como fonte. O cadastro é amplo, mundial, público e auditável. Nenhum pagamento influencia inclusão ou remoção.</p>
+</header>
+
+{{with .Data}}
+<section aria-labelledby="veiculos-titulo">
+  <h2 id="veiculos-titulo" class="section-label">Veículos</h2>
+  <ul class="outlet-grid">
+    {{range .Outlets}}
+    <li class="outlet">
+      <h3>{{.Name}}{{if ne .Status "active"}} <span class="tag tag-{{.Status}}">{{statusLabel .Status}}</span>{{end}}</h3>
+      <p class="meta">{{.Country}} · {{.Language}}{{range .Domains}} · {{.}}{{end}}</p>
+      <p class="outlet-links">
+        <a href="{{criterion .Criteria "newsroom_url"}}" rel="noopener noreferrer">Redação</a>
+        <a href="{{criterion .Criteria "editorial_policy_url"}}" rel="noopener noreferrer">Política editorial</a>
+        <a href="{{criterion .Criteria "corrections_policy_url"}}" rel="noopener noreferrer">Correções</a>
+      </p>
+      <p class="meta">{{criterion .Criteria "legal_entity"}}</p>
+      {{if or (signalOn .Signals "ifcn") (signalOn .Signals "trust_project") (signalOn .Signals "jti")}}
+      <p class="signals">Sinais positivos, não requisitos:{{if signalOn .Signals "ifcn"}} IFCN{{end}}{{if signalOn .Signals "trust_project"}} Trust Project{{end}}{{if signalOn .Signals "jti"}} JTI{{end}}.</p>
+      {{end}}
+    </li>
+    {{end}}
+  </ul>
+</section>
+
+<section aria-labelledby="historico-lista">
+  <h2 id="historico-lista" class="section-label">Histórico público</h2>
+  <ol class="timeline">
+    {{range .Changes}}
+    <li>
+      <p><strong>{{actionLabel .Action}}</strong> — {{.OutletName}} · {{fmtDate .CreatedAt}}</p>
+      <p>{{.Reason}}</p>
+    </li>
+    {{end}}
+  </ol>
+</section>
+{{end}}
+{{template "footer" .}}
+{{end}}

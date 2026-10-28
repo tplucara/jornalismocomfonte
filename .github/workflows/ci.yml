@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.25.x"
+      - name: vet e testes
+        run: |
+          go vet ./...
+          go test ./...
+          go build -o /tmp/web ./cmd/web
+          go build -o /tmp/worker ./cmd/worker
+      - name: staticcheck
+        run: go run honnef.co/go/tools/cmd/staticcheck@2025.1.1 ./...
+      - name: gosec
+        run: go run github.com/securego/gosec/v2/cmd/gosec@v2.22.10 -exclude-generated ./...
+      - name: govulncheck
+        run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+
+  image:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: build imagens
+        run: |
+          docker build --target web -t jcf-web:ci .
+          docker build --target worker -t jcf-worker:ci .
+      - name: trivy
+        uses: aquasecurity/trivy-action@0.32.0
+        with:
+          image-ref: jcf-web:ci
+          severity: CRITICAL
+          exit-code: "1"
+          ignore-unfixed: true
