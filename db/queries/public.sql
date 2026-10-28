@@ -178,7 +178,7 @@ ORDER BY decided_at;
 -- name: GetJournalistPublic :one
 SELECT id, display_name, avatar_url, tagline, status, created_at
 FROM journalists
-WHERE id = $1 AND status IN ('verified', 'suspended');
+WHERE id = $1 AND status IN ('pending_verification', 'verified', 'suspended');
 
 -- name: GetCurrentReputation :one
 SELECT journalist_id, computed_at, author, reviewer, algorithm

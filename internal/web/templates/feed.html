@@ -22,7 +22,7 @@
           <a class="who" href="/j/{{$a.AuthorID}}">{{template "portrait" (portrait $a.AuthorName (text $a.AuthorAvatarUrl) "")}}<span class="who-name">{{$a.AuthorName}}</span></a>
         </p>
         <p class="sources-count">{{$a.SourceCount}} {{if eq $a.SourceCount 1}}fonte{{else}}fontes{{end}} no cadastro
-          {{if gt $a.ValidCount 0}} · avaliado por {{$a.ValidCount}} {{if eq $a.ValidCount 1}}jornalista{{else}}jornalistas{{end}}: {{pct $a.FaithfulCount $a.ValidCount}} fiel às fontes{{end}}
+          {{if gt $a.ValidCount 0}} · avaliado por {{$a.ValidCount}} {{if eq $a.ValidCount 1}}conta{{else}}contas{{end}}: {{pct $a.FaithfulCount $a.ValidCount}} fiel às fontes{{end}}
         </p>
       </article>
     </li>

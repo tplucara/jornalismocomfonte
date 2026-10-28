@@ -73,7 +73,7 @@
           <a class="who" href="/j/{{.AuthorID}}">{{template "portrait" (portrait .AuthorName (text .AuthorAvatarUrl) "")}}<span class="who-name">{{.AuthorName}}</span></a>
         </p>
         <p class="sources-count">{{.SourceCount}} {{if eq .SourceCount 1}}fonte{{else}}fontes{{end}} no cadastro
-          {{if gt .ValidCount 0}} · avaliado por {{.ValidCount}} {{if eq .ValidCount 1}}jornalista{{else}}jornalistas{{end}}: {{pct .FaithfulCount .ValidCount}} fiel às fontes{{end}}
+          {{if gt .ValidCount 0}} · avaliado por {{.ValidCount}} {{if eq .ValidCount 1}}conta{{else}}contas{{end}}: {{pct .FaithfulCount .ValidCount}} fiel às fontes{{end}}
         </p>
       </article>
     </li>

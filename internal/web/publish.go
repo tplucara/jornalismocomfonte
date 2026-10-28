@@ -23,12 +23,11 @@ import (
 )
 
 type publishForm struct {
-	Title, Body, Kind                         string
-	URL1, URL2, URL3                          string
-	Excerpt1, Excerpt2, Excerpt3              string
-	ErrTitle, ErrBody, ErrKind, ErrSources    string
-	ErrForm                                   string
-	Status                                    db.JournalistStatus
+	Title, Body, Kind                      string
+	URL1, URL2, URL3                       string
+	ErrTitle, ErrBody, ErrKind, ErrSources string
+	ErrForm                                string
+	Status                                 db.JournalistStatus
 }
 
 func (publishForm) Robots() string { return "noindex, follow" }
@@ -45,8 +44,8 @@ func (s *Server) handlePublishGet(w http.ResponseWriter, r *http.Request) {
 		s.fail(w, r, err)
 		return
 	}
-	if st.Status != db.JournalistStatusVerified {
-		s.rd.renderError(w, r, http.StatusForbidden, "Só contas com identidade verificada publicam. Envie o comprovante em Conta.")
+	if !accountCanWrite(st.Status) {
+		s.rd.renderError(w, r, http.StatusForbidden, "Esta conta não pode publicar.")
 		return
 	}
 	s.rd.render(w, r, http.StatusOK, "publish.html", "Escrever", "Publicar com 1 a 3 fontes do cadastro.", publishForm{
@@ -67,8 +66,8 @@ func (s *Server) handlePublishPost(w http.ResponseWriter, r *http.Request) {
 		s.fail(w, r, err)
 		return
 	}
-	if st.Status != db.JournalistStatusVerified {
-		s.rd.renderError(w, r, http.StatusForbidden, "Só contas com identidade verificada publicam.")
+	if !accountCanWrite(st.Status) {
+		s.rd.renderError(w, r, http.StatusForbidden, "Esta conta não pode publicar.")
 		return
 	}
 	if err := r.ParseForm(); err != nil {
@@ -76,16 +75,13 @@ func (s *Server) handlePublishPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	f := publishForm{
-		Title:    strings.TrimSpace(r.PostForm.Get("title")),
-		Body:     strings.TrimSpace(r.PostForm.Get("body")),
-		Kind:     strings.TrimSpace(r.PostForm.Get("kind")),
-		URL1:     strings.TrimSpace(r.PostForm.Get("source_url_1")),
-		URL2:     strings.TrimSpace(r.PostForm.Get("source_url_2")),
-		URL3:     strings.TrimSpace(r.PostForm.Get("source_url_3")),
-		Excerpt1: strings.TrimSpace(r.PostForm.Get("source_excerpt_1")),
-		Excerpt2: strings.TrimSpace(r.PostForm.Get("source_excerpt_2")),
-		Excerpt3: strings.TrimSpace(r.PostForm.Get("source_excerpt_3")),
-		Status:   st.Status,
+		Title:  strings.TrimSpace(r.PostForm.Get("title")),
+		Body:   strings.TrimSpace(r.PostForm.Get("body")),
+		Kind:   strings.TrimSpace(r.PostForm.Get("kind")),
+		URL1:   strings.TrimSpace(r.PostForm.Get("source_url_1")),
+		URL2:   strings.TrimSpace(r.PostForm.Get("source_url_2")),
+		URL3:   strings.TrimSpace(r.PostForm.Get("source_url_3")),
+		Status: st.Status,
 	}
 	srcs, verr := validatePublish(r.Context(), s.q, f)
 	if verr != "" {
@@ -104,8 +100,8 @@ func (s *Server) handlePublishPost(w http.ResponseWriter, r *http.Request) {
 }
 
 type preparedSource struct {
-	URL, Excerpt, DomainID, Hash, Reason string
-	Meta                                 []byte
+	URL, DomainID, Hash, Reason string
+	Meta                        []byte
 }
 
 func validatePublish(ctx context.Context, q *db.Queries, f publishForm) ([]preparedSource, string) {
@@ -119,21 +115,14 @@ func validatePublish(ctx context.Context, q *db.Queries, f publishForm) ([]prepa
 	if !kind.Valid() {
 		return nil, "Escolha Reportagem, Análise ou Opinião."
 	}
-	type pair struct{ u, e string }
-	raw := []pair{{f.URL1, f.Excerpt1}, {f.URL2, f.Excerpt2}, {f.URL3, f.Excerpt3}}
+	raw := []string{f.URL1, f.URL2, f.URL3}
 	var out []preparedSource
 	seen := map[string]bool{}
-	for _, p := range raw {
-		if p.u == "" && p.e == "" {
+	for _, rawURL := range raw {
+		if rawURL == "" {
 			continue
 		}
-		if p.u == "" || p.e == "" {
-			return nil, "Cada fonte precisa de URL e trecho citado."
-		}
-		if utf8.RuneCountInString(p.e) > 300 {
-			return nil, "O trecho citado tem no máximo 300 caracteres."
-		}
-		u, err := url.Parse(p.u)
+		u, err := url.Parse(rawURL)
 		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
 			return nil, "A URL da fonte precisa ser http(s) completa."
 		}
@@ -146,7 +135,6 @@ func validatePublish(ctx context.Context, q *db.Queries, f publishForm) ([]prepa
 		seen[key] = true
 		dom, err := q.FindOutletDomainByHost(ctx, host)
 		if errors.Is(err, pgx.ErrNoRows) {
-			// try full hostname with www
 			dom, err = q.FindOutletDomainByHost(ctx, strings.ToLower(u.Hostname()))
 		}
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -164,12 +152,12 @@ func validatePublish(ctx context.Context, q *db.Queries, f publishForm) ([]prepa
 				return nil, "A URL parece opinião/coluna/editorial (" + pat + "), não reportagem."
 			}
 		}
-		hash, meta, ferr := fetchSourceIntegrity(p.u, p.e)
+		hash, meta, ferr := fetchSourceIntegrity(rawURL)
 		if ferr != nil {
 			return nil, ferr.Error()
 		}
 		out = append(out, preparedSource{
-			URL: p.u, Excerpt: p.e, DomainID: dom.DomainID, Hash: hash, Meta: meta,
+			URL: rawURL, DomainID: dom.DomainID, Hash: hash, Meta: meta,
 			Reason: "path_pattern: não casa com paths de opinião do veículo",
 		})
 	}
@@ -179,7 +167,7 @@ func validatePublish(ctx context.Context, q *db.Queries, f publishForm) ([]prepa
 	return out, ""
 }
 
-func fetchSourceIntegrity(rawURL, excerpt string) (hash string, meta []byte, err error) {
+func fetchSourceIntegrity(rawURL string) (hash string, meta []byte, err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, nil)
@@ -205,9 +193,7 @@ func fetchSourceIntegrity(rawURL, excerpt string) (hash string, meta []byte, err
 	hash = "sha256:" + hex.EncodeToString(sum[:])
 	meta, _ = json.Marshal(map[string]string{
 		"fetched_content_type": resp.Header.Get("Content-Type"),
-		"excerpt_note":         "trecho informado pelo autor",
 	})
-	_ = excerpt
 	return hash, meta, nil
 }
 
@@ -255,7 +241,7 @@ func (s *Server) publishArticle(ctx context.Context, authorID string, f publishF
 			ClassificationReason: src.Reason,
 			ContentHash:          src.Hash,
 			Meta:                 src.Meta,
-			Excerpt:              src.Excerpt,
+			Excerpt:              "",
 			ArchiveUrl:           "",
 		}); err != nil {
 			return "", err

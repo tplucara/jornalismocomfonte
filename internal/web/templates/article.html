@@ -30,9 +30,8 @@
           {{if eq .OutletStatus "suspended"}}<span class="flag">veículo suspenso do cadastro</span>{{end}}
           {{if eq .OutletStatus "removed"}}<span class="flag">veículo removido do cadastro</span>{{end}}
         </p>
-        <p class="source-title">{{if metaTitle .Meta}}{{metaTitle .Meta}}{{else}}{{.Excerpt}}{{end}}</p>
+        {{with metaTitle .Meta}}<p class="source-title">{{.}}</p>{{end}}
         {{with hashStatusLabel .HashStatus}}<p class="flag">{{.}}</p>{{end}}
-        <blockquote><p>{{.Excerpt}}</p></blockquote>
         <p class="source-actions">
           <a class="btn" href="{{.Url}}" rel="noopener noreferrer">Consultar fonte</a>
           {{if .ArchiveUrl.Valid}}<a class="quiet" href="{{.ArchiveUrl.String}}" rel="noopener noreferrer">Cópia arquivada</a>{{end}}
@@ -41,7 +40,7 @@
       {{end}}
     </ol>
     {{if gt .ValidCount 0}}
-      <p class="eval">Avaliado por {{.ValidCount}} {{if eq .ValidCount 1}}jornalista{{else}}jornalistas{{end}} como fiel às fontes: {{pct .FaithfulCount .ValidCount}} ({{.FaithfulCount}} fiel · {{.DistortsCount}} distorce). Avaliação entre pares, não atestado da plataforma.</p>
+      <p class="eval">Avaliado por {{.ValidCount}} {{if eq .ValidCount 1}}conta{{else}}contas{{end}} como fiel às fontes: {{pct .FaithfulCount .ValidCount}} ({{.FaithfulCount}} fiel · {{.DistortsCount}} distorce). Avaliação entre pares, não atestado da plataforma.</p>
     {{else}}
       <p class="eval">Ainda sem avaliações válidas entre pares.</p>
     {{end}}

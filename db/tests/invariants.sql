@@ -215,7 +215,7 @@ SELECT pg_temp.expect_ok('publicar com 2 reportagens de veículos cadastrados', 
   WHERE id = '00000000-0000-0000-0000-000000000100';
 $q$);
 
-SELECT pg_temp.expect_fail('publicar por autor não verificado', $q$
+SELECT pg_temp.expect_ok('publicar por conta ativa sem selo de jornalista', $q$
   INSERT INTO journalists (id, email, password_hash, display_name, status) VALUES
     ('00000000-0000-0000-0000-000000000006', 'novato@jcf.test', 'x', 'Novato', 'pending_verification');
   INSERT INTO articles (id, author_id, kind) VALUES
@@ -226,6 +226,19 @@ SELECT pg_temp.expect_fail('publicar por autor não verificado', $q$
     ('00000000-0000-0000-0000-000000000121', 1, 'https://exemplo.com.br/n9', '00000000-0000-0000-0000-000000000011', 'report', 'path_pattern', 'h', 't');
   UPDATE articles SET status = 'published', published_at = now(), current_version_id = '00000000-0000-0000-0000-000000000121'
   WHERE id = '00000000-0000-0000-0000-000000000120';
+$q$);
+
+SELECT pg_temp.expect_fail('publicar por conta suspensa', $q$
+  INSERT INTO journalists (id, email, password_hash, display_name, status) VALUES
+    ('00000000-0000-0000-0000-000000000016', 'suspenso@jcf.test', 'x', 'Suspenso', 'suspended');
+  INSERT INTO articles (id, author_id, kind) VALUES
+    ('00000000-0000-0000-0000-000000000130', '00000000-0000-0000-0000-000000000016', 'report');
+  INSERT INTO article_versions (id, article_id, version_no, title, body, created_by) VALUES
+    ('00000000-0000-0000-0000-000000000131', '00000000-0000-0000-0000-000000000130', 1, 'T', '{}', '00000000-0000-0000-0000-000000000016');
+  INSERT INTO article_sources (version_id, position, url, outlet_domain_id, classification, classification_method, content_hash, excerpt) VALUES
+    ('00000000-0000-0000-0000-000000000131', 1, 'https://exemplo.com.br/n10', '00000000-0000-0000-0000-000000000011', 'report', 'path_pattern', 'h', 't');
+  UPDATE articles SET status = 'published', published_at = now(), current_version_id = '00000000-0000-0000-0000-000000000131'
+  WHERE id = '00000000-0000-0000-0000-000000000130';
 $q$);
 
 SELECT pg_temp.expect_fail('append-only: editar versão publicada in-place', $q$

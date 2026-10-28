@@ -23,7 +23,12 @@ import (
 )
 
 // Versão dos documentos em docs/legal. O aceite grava exatamente esta versão.
-const legalVersion = "1.0"
+const legalVersion = "1.1"
+
+// accountCanWrite: conta ativa pode publicar e avaliar. Selo verified é opcional.
+func accountCanWrite(status db.JournalistStatus) bool {
+	return status == db.JournalistStatusPendingVerification || status == db.JournalistStatusVerified
+}
 
 const (
 	sessionJournalistID = "journalist_id"
@@ -173,7 +178,7 @@ func (s *Server) handleSignup(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/conta", http.StatusSeeOther)
 		return
 	}
-	s.rd.render(w, r, http.StatusOK, "signup.html", "Criar conta", "Criar conta de jornalista no Jornalismo com Fonte.", signupForm{})
+	s.rd.render(w, r, http.StatusOK, "signup.html", "Criar conta", "Criar conta no Jornalismo com Fonte.", signupForm{})
 }
 
 func (s *Server) handleSignupPost(w http.ResponseWriter, r *http.Request) {
@@ -193,7 +198,7 @@ func (s *Server) handleSignupPost(w http.ResponseWriter, r *http.Request) {
 	}
 	if !form.ok() {
 		form.Password, form.PasswordConfirm = "", ""
-		s.rd.render(w, r, http.StatusUnprocessableEntity, "signup.html", "Criar conta", "Criar conta de jornalista no Jornalismo com Fonte.", form)
+		s.rd.render(w, r, http.StatusUnprocessableEntity, "signup.html", "Criar conta", "Criar conta no Jornalismo com Fonte.", form)
 		return
 	}
 	hash, err := auth.HashPassword(form.Password)
@@ -223,7 +228,7 @@ func (s *Server) handleSignupPost(w http.ResponseWriter, r *http.Request) {
 	if isUniqueViolation(err) {
 		_ = s.sessions.Destroy(r.Context())
 		form.ErrEmail = "Já existe uma conta com este e-mail."
-		s.rd.render(w, r, http.StatusUnprocessableEntity, "signup.html", "Criar conta", "Criar conta de jornalista no Jornalismo com Fonte.", form)
+		s.rd.render(w, r, http.StatusUnprocessableEntity, "signup.html", "Criar conta", "Criar conta no Jornalismo com Fonte.", form)
 		return
 	}
 	if err != nil {
@@ -300,7 +305,7 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/conta", http.StatusSeeOther)
 		return
 	}
-	s.rd.render(w, r, http.StatusOK, "login.html", "Entrar", "Entrar na conta de jornalista.", loginView{})
+	s.rd.render(w, r, http.StatusOK, "login.html", "Entrar", "Entrar na conta.", loginView{})
 }
 
 func (s *Server) handleLoginPost(w http.ResponseWriter, r *http.Request) {
@@ -323,7 +328,7 @@ func (s *Server) handleLoginPost(w http.ResponseWriter, r *http.Request) {
 	addr, err := mail.ParseAddress(view.Email)
 	if err != nil || !strings.EqualFold(addr.Address, view.Email) || password == "" || len(password) > auth.MaxPasswordBytes {
 		view.ErrForm = "E-mail ou senha não conferem."
-		s.rd.render(w, r, http.StatusUnprocessableEntity, "login.html", "Entrar", "Entrar na conta de jornalista.", view)
+		s.rd.render(w, r, http.StatusUnprocessableEntity, "login.html", "Entrar", "Entrar na conta.", view)
 		return
 	}
 	email := strings.ToLower(addr.Address)
@@ -331,7 +336,7 @@ func (s *Server) handleLoginPost(w http.ResponseWriter, r *http.Request) {
 	if errors.Is(err, pgx.ErrNoRows) {
 		_, _ = auth.CheckPassword("", password)
 		view.ErrForm = "E-mail ou senha não conferem."
-		s.rd.render(w, r, http.StatusUnprocessableEntity, "login.html", "Entrar", "Entrar na conta de jornalista.", view)
+		s.rd.render(w, r, http.StatusUnprocessableEntity, "login.html", "Entrar", "Entrar na conta.", view)
 		return
 	}
 	if err != nil {
@@ -345,18 +350,18 @@ func (s *Server) handleLoginPost(w http.ResponseWriter, r *http.Request) {
 	}
 	if !ok {
 		view.ErrForm = "E-mail ou senha não conferem."
-		s.rd.render(w, r, http.StatusUnprocessableEntity, "login.html", "Entrar", "Entrar na conta de jornalista.", view)
+		s.rd.render(w, r, http.StatusUnprocessableEntity, "login.html", "Entrar", "Entrar na conta.", view)
 		return
 	}
 	switch row.Status {
 	case db.JournalistStatusPendingVerification, db.JournalistStatusVerified:
 	case db.JournalistStatusSuspended:
 		view.ErrForm = "Esta conta está suspensa."
-		s.rd.render(w, r, http.StatusUnprocessableEntity, "login.html", "Entrar", "Entrar na conta de jornalista.", view)
+		s.rd.render(w, r, http.StatusUnprocessableEntity, "login.html", "Entrar", "Entrar na conta.", view)
 		return
 	default:
 		view.ErrForm = "Esta conta está encerrada."
-		s.rd.render(w, r, http.StatusUnprocessableEntity, "login.html", "Entrar", "Entrar na conta de jornalista.", view)
+		s.rd.render(w, r, http.StatusUnprocessableEntity, "login.html", "Entrar", "Entrar na conta.", view)
 		return
 	}
 	if err := s.sessions.RenewToken(r.Context()); err != nil {
@@ -370,7 +375,7 @@ func (s *Server) handleLoginPost(w http.ResponseWriter, r *http.Request) {
 
 type accountView struct {
 	Name, Email, Tagline, Avatar, Status, Flash string
-	Pending, ProofPending, Verified, Staff      bool
+	Pending, ProofPending, Verified, CanWrite, Staff bool
 }
 
 func (accountView) Robots() string { return "noindex, follow" }
@@ -400,7 +405,7 @@ func (s *Server) handleAccount(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	s.rd.render(w, r, http.StatusOK, "account.html", "Sua conta", "Conta de jornalista no Jornalismo com Fonte.", accountView{
+	s.rd.render(w, r, http.StatusOK, "account.html", "Sua conta", "Sua conta no Jornalismo com Fonte.", accountView{
 		Name:         row.DisplayName,
 		Email:        row.Email,
 		Tagline:      row.Tagline,
@@ -410,6 +415,7 @@ func (s *Server) handleAccount(w http.ResponseWriter, r *http.Request) {
 		Pending:      row.Status == db.JournalistStatusPendingVerification,
 		ProofPending: proofPending,
 		Verified:     row.Status == db.JournalistStatusVerified,
+		CanWrite:     accountCanWrite(row.Status),
 		Staff:        s.isStaff(row.Email),
 	})
 }
@@ -417,7 +423,7 @@ func (s *Server) handleAccount(w http.ResponseWriter, r *http.Request) {
 func accountStatus(status db.JournalistStatus) string {
 	switch status {
 	case db.JournalistStatusPendingVerification:
-		return "Aguardando revisão humana da identidade. Até lá, a conta não publica, não avalia e não comenta. Envie o comprovante nesta tela."
+		return "Você já pode publicar e avaliar com fontes do cadastro. O selo \"jornalista verificado\" é opcional: envie o comprovante abaixo se quiser a marca de identidade profissional. O selo não atesta o conteúdo."
 	case db.JournalistStatusVerified:
 		return "Identidade de jornalista verificada. Isso é a pessoa, não o conteúdo que ela publicar."
 	case db.JournalistStatusSuspended:

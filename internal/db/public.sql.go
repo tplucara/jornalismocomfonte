@@ -119,7 +119,7 @@ func (q *Queries) GetCurrentReputation(ctx context.Context, journalistID string)
 const getJournalistPublic = `-- name: GetJournalistPublic :one
 SELECT id, display_name, avatar_url, tagline, status, created_at
 FROM journalists
-WHERE id = $1 AND status IN ('verified', 'suspended')
+WHERE id = $1 AND status IN ('pending_verification', 'verified', 'suspended')
 `
 
 type GetJournalistPublicRow struct {

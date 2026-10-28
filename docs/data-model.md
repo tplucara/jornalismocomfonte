@@ -44,7 +44,7 @@ erDiagram
 | `cadastro-de-veiculos` | Critérios objetivos de entrada | `outlets_criteria_complete CHECK` (4 chaves obrigatórias no jsonb) | outlet sem política de correções |
 | `cadastro-de-veiculos` | Toda mudança tem justificativa pública | `outlet_changes` append-only + constraint trigger `require_outlet_change_entry` | outlet sem histórico; UPDATE em outlet_changes |
 | `cadastro-de-veiculos` | Domínio pertence a um só veículo | `outlet_domains.domain citext UNIQUE` | domínio duplicado |
-| `perfil-identidade` | Só jornalistas verificados publicam/avaliam | `enforce_publication_rules` e `enforce_reading_gate` exigem `status = 'verified'` | autor não verificado |
+| `perfil-identidade` | Conta ativa publica/avalia; selo verified opcional | `enforce_publication_rules` e `enforce_reading_gate` exigem status em (`pending_verification`,`verified`) | autor/avaliador suspenso |
 | `perfil-identidade` | 1 pessoa = 1 conta | índice único parcial `verifications_one_person_one_account (document_hash) WHERE status='approved'` | mesmo documento aprovado duas vezes |
 | `perfil-identidade` | Maioridade declarada | `legal_acceptances_adult_required CHECK` | aceite sem maioridade |
 | `perfil-identidade` | Dado bruto descartado | só `document_hash` + `raw_purged_at`; arquivo fora do banco | — |

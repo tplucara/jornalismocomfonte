@@ -2,7 +2,7 @@
 {{template "header" .}}
 <article class="article">
   <h1>Entrar</h1>
-  <p class="lede">Conta de jornalista. O público lê sem entrar.</p>
+  <p class="lede">Entre na sua conta para publicar ou avaliar. O público lê sem entrar.</p>
   {{if .Data.ErrForm}}<p class="form-error" role="alert">{{.Data.ErrForm}}</p>{{end}}
   <form class="account-form" method="post" action="/entrar" accept-charset="utf-8">
     <div>

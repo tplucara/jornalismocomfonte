@@ -1,6 +1,6 @@
 # Política de Conteúdo e Remoção — Jornalismo com Fonte
 
-**Versão 1.0** · Vigente a partir de [A PREENCHER: data de publicação]
+**Versão 1.1** · Vigente a partir de [A PREENCHER: data de publicação]
 **Operador**: Anvil Software LTDA, CNPJ 45.592.167/0001-27
 **Canal de notificações**: [A PREENCHER: e-mail de contato legal]
 
@@ -37,7 +37,7 @@
 |---|---|---|
 | Fonte válida | 1 a 3 URLs de reportagens de veículos cadastrados; tipo de peça; link funcional | Publicação **não é aceita**; autor vê o motivo e corrige |
 | Tag de tipo | Reportagem, Análise ou Opinião presente | Publicação não é aceita |
-| Registro de integridade | Hash, metadados, trecho curto e link de arquivo externo da fonte | Gerado na publicação; se o hash divergir depois, aviso "fonte alterada/indisponível" no artigo |
+| Registro de integridade | Hash, metadados e link de arquivo externo da fonte (quando houver) | Gerado na publicação; se o hash divergir depois, aviso "fonte alterada/indisponível" no artigo |
 | Questionário de leitura | Avaliador abriu a fonte e acertou 2 perguntas geradas a partir dela | Voto ou comentário **não é liberado** |
 | Filtro de qualidade | Voto ou comentário tem lastro no conteúdo; não é ataque pessoal, idolatria ou ação coordenada | Item **não é contabilizado nem publicado**; autor do item vê o motivo e pode apelar |
 
@@ -45,7 +45,7 @@ Nenhuma dessas regras remove artigo já publicado. Elas só condicionam publica�
 
 ## 3. Denúncia de distorção de fonte (entre jornalistas)
 
-3.1. Qualquer jornalista verificado pode denunciar que um artigo **afirma algo que a fonte citada não sustenta**.
+3.1. Qualquer Usuário com conta ativa pode denunciar que um artigo **afirma algo que a fonte citada não sustenta**.
 
 3.2. Fluxo: denúncia com indicação do trecho e da fonte → registro → análise pela equipe (critério único: a fonte sustenta ou não a afirmação?) → decisão justificada → aviso ao autor e ao denunciante.
 
@@ -179,6 +179,7 @@ Encarregado de dados (LGPD): Rafael de Lima Lucas — [A PREENCHER: e-mail do en
 
 | Versão | Data | Alteração |
 |---|---|---|
+| 1.1 | [A PREENCHER] | Denúncia de distorção aberta a qualquer conta ativa |
 | 1.0 | [A PREENCHER] | Versão inicial |
 
 ---

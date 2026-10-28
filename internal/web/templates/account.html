@@ -30,7 +30,8 @@
 
   {{if .Data.Pending}}
   <section class="account-block" aria-labelledby="prova-titulo">
-    <h2 id="prova-titulo">Comprovante de jornalista</h2>
+    <h2 id="prova-titulo">Selo de jornalista (opcional)</h2>
+    <p class="hint">Não é necessário para publicar. O selo marca identidade profissional, não o conteúdo.</p>
     {{if .Data.ProofPending}}
       <p>Há um comprovante em análise.</p>
     {{else}}
@@ -57,7 +58,7 @@
   </section>
   {{end}}
 
-  {{if .Data.Verified}}
+  {{if .Data.CanWrite}}
   <p><a class="btn" href="/escrever">Escrever publicação</a></p>
   {{end}}
   {{if .Data.Staff}}

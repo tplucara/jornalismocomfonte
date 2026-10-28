@@ -1,6 +1,6 @@
 # Termos de Uso — Jornalismo com Fonte
 
-**Versão 1.0** · Vigente a partir de [A PREENCHER: data de publicação]
+**Versão 1.1** · Vigente a partir de [A PREENCHER: data de publicação]
 **Controlador**: Anvil Software LTDA, CNPJ 45.592.167/0001-27
 **Representante legal**: Rafael de Lima Lucas, CEO
 **Contato legal**: [A PREENCHER: e-mail de contato legal]
@@ -9,20 +9,21 @@
 
 ## Resumo em linguagem simples
 
-- O Jornalismo com Fonte é um **espaço técnico de publicação** para jornalistas. Não somos um jornal, não temos linha editorial e não revisamos conteúdo antes de publicar.
+- O Jornalismo com Fonte é um **espaço técnico de publicação**. Não somos um jornal, não temos linha editorial e não revisamos conteúdo antes de publicar.
 - **Você é o único responsável** pelo que publica, inclusive se burlar as nossas regras.
 - Exigimos que toda publicação cite **1 a 3 reportagens de veículos de comunicação cadastrados**. Isso é uma regra automática, não um atestado de verdade.
 - **Não garantimos, não atestamos e não certificamos** que qualquer conteúdo seja verdadeiro.
-- Só jornalistas verificados, maiores de 18 anos, com uma conta por pessoa, podem publicar, avaliar e comentar.
+- Pessoas naturais **maiores de 18 anos**, com **uma conta por pessoa** e aceite destes Termos, podem publicar e avaliar **cumprindo as regras de fonte e de leitura**. O selo "jornalista verificado" é **opcional** e refere-se só à identidade profissional, nunca ao conteúdo.
 - Removemos conteúdo por ordem judicial ou por notificação válida em casos de ilicitude evidente, conforme a política de conteúdo.
-- Nada aqui é vendido: verificação, reputação e posição no feed não podem ser compradas.
+- Nada aqui é vendido: selo de verificação, reputação e posição no feed não podem ser compradas.
 
 ---
 
 ## 1. Definições
 
 - **Plataforma**: o serviço Jornalismo com Fonte, acessível por site e aplicações, operado pela Anvil Software LTDA.
-- **Usuário** ou **Jornalista**: pessoa natural com conta verificada na Plataforma.
+- **Usuário** ou **Autor**: pessoa natural com conta ativa na Plataforma (aceite dos Documentos legais e status que permita publicar ou avaliar).
+- **Jornalista verificado**: Usuário que obteve o selo opcional de identidade profissional após revisão humana. O selo **não** significa que a Plataforma revisou ou atestou o conteúdo publicado por essa pessoa.
 - **Leitor**: qualquer pessoa que acessa conteúdo público sem conta.
 - **Conteúdo**: todo texto, título, imagem, mídia, fonte citada, avaliação, comentário ou qualquer material inserido por Usuário.
 - **Cadastro de veículos**: relação pública de veículos jornalísticos que podem ser citados como fonte, porque atendem a critérios estruturais publicados, com histórico de inclusão e remoção. Não atesta a veracidade do veículo nem do conteúdo.
@@ -31,7 +32,7 @@
 
 ## 2. Natureza do serviço
 
-2.1. A Plataforma é um **provedor de aplicação de internet** nos termos da Lei 12.965/2014 (Marco Civil da Internet). Ela oferece infraestrutura técnica para que jornalistas publiquem conteúdo próprio e avaliem conteúdo de colegas.
+2.1. A Plataforma é um **provedor de aplicação de internet** nos termos da Lei 12.965/2014 (Marco Civil da Internet). Ela oferece infraestrutura técnica para que Usuários publiquem conteúdo próprio ancorado em fontes e avaliem a fidelidade de publicações às fontes citadas.
 
 2.2. A Plataforma **não é veículo de imprensa**, não exerce atividade jornalística própria, **não possui linha editorial**, **não revisa previamente** o conteúdo publicado e **não edita** texto de Usuário.
 
@@ -45,22 +46,22 @@
 
 3.2. A exigência de fontes, o questionário de leitura, o filtro de avaliações, a avaliação entre pares e a reputação são **auxílios ao leitor** para reduzir o risco de desinformação. Eles **não são garantia** e não devem ser interpretados como declaração da Plataforma de que um conteúdo é verdadeiro.
 
-3.3. Expressões como "fontes no cadastro", "avaliado por N jornalistas como fiel às fontes" ou "jornalista verificado" referem-se, respectivamente, à origem formal das fontes citadas, à opinião de outros Usuários e à identidade profissional do autor. **Nenhuma delas** significa que a Plataforma verificou o conteúdo.
+3.3. Expressões como "fontes no cadastro", "avaliado por N contas como fiel às fontes" ou "jornalista verificado" referem-se, respectivamente, à origem formal das fontes citadas, à opinião de outros Usuários sobre fidelidade às fontes e à identidade profissional opcional do autor. **Nenhuma delas** significa que a Plataforma verificou o conteúdo ou atestou verdade.
 
 3.4. O Usuário que, por qualquer meio, burlar as Regras estruturais para publicar conteúdo falso, enganoso ou ilícito **responde sozinho**, civil e criminalmente, pelos danos causados a terceiros e à Plataforma, nos termos da cláusula 9.
 
 ## 4. Elegibilidade e conta
 
-4.1. Podem criar conta apenas pessoas naturais que, cumulativamente:
-   a) sejam **jornalistas**, comprovados por registro profissional, vínculo comprovável com veículo cadastrado ou portfólio de reportagens publicadas em veículos cadastrados;
-   b) tenham **18 anos completos** ou mais;
-   c) não possuam outra conta na Plataforma (**uma pessoa, uma conta**).
+4.1. Podem criar conta pessoas naturais que, cumulativamente:
+   a) tenham **18 anos completos** ou mais;
+   b) não possuam outra conta na Plataforma (**uma pessoa, uma conta**);
+   c) aceitem integralmente os Documentos legais.
 
-4.2. Ao criar a conta, o Usuário **declara, sob as penas da lei**, que atende aos requisitos acima e aceita integralmente os Documentos legais. A Plataforma registra a versão aceita, a data e o identificador técnico da sessão.
+4.2. Ao criar a conta, o Usuário **declara, sob as penas da lei**, que atende aos requisitos acima e aceita integralmente os Documentos legais. A Plataforma registra a versão aceita, a data e o identificador técnico da sessão. O Usuário responde civil e criminalmente pelo Conteúdo que publicar.
 
-4.3. A verificação de identidade profissional passa por **revisão humana**. A Plataforma pode recusar ou revogar verificação com justificativa, cabendo apelação. Os documentos enviados são descartados após a decisão, conforme a Política de Privacidade.
+4.3. O selo **"jornalista verificado"** é **opcional**. Quem o solicita apresenta prova objetiva (registro profissional, vínculo com veículo cadastrado ou portfólio em veículos cadastrados). A decisão passa por **revisão humana**, com justificativa e apelação. Os documentos enviados são descartados após a decisão, conforme a Política de Privacidade. **Sem o selo, o Usuário já pode publicar e avaliar**, desde que cumpra as Regras estruturais.
 
-4.4. A verificação **nunca é vendida**. Não há selo, plano, assinatura ou pagamento que conceda, acelere ou destaque verificação, reputação ou posição no feed.
+4.4. O selo **nunca é vendido**. Não há plano, assinatura ou pagamento que conceda, acelere ou destaque selo, reputação ou posição no feed.
 
 4.5. Leitores sem conta podem apenas ler conteúdo público. Não podem publicar, avaliar, comentar ou reagir.
 
@@ -85,7 +86,7 @@
 
 6.1. O Usuário mantém a titularidade dos direitos autorais sobre seu Conteúdo.
 
-6.2. Ao publicar, o Usuário concede à Plataforma licença **não exclusiva, gratuita, mundial e revogável** para: exibir, reproduzir, armazenar, indexar, formatar e distribuir o Conteúdo na Plataforma e em seus canais; gerar registro de integridade das fontes (hash, metadados, trecho curto); e manter histórico de versões e placeholders conforme a Política de Conteúdo e Remoção.
+6.2. Ao publicar, o Usuário concede à Plataforma licença **não exclusiva, gratuita, mundial e revogável** para: exibir, reproduzir, armazenar, indexar, formatar e distribuir o Conteúdo na Plataforma e em seus canais; gerar registro de integridade das fontes (hash, metadados e link de arquivo externo quando houver); e manter histórico de versões e placeholders conforme a Política de Conteúdo e Remoção.
 
 6.3. A licença é revogada com a exclusão do Conteúdo pelo Usuário, exceto quanto a: registros de auditoria exigidos por lei; placeholders de remoção; e cópias em cache de terceiros fora do controle da Plataforma.
 
@@ -93,13 +94,13 @@
 
 ## 7. Regras estruturais de publicação e interação
 
-7.1. **Fontes**: toda publicação exige entre 1 e 3 URLs de reportagens de veículos cadastrados. A Plataforma classifica automaticamente o tipo de peça e pode recusar URLs de opinião, editorial, blog, rede social ou agregador. A Plataforma registra hash, metadados, trecho curto e link para arquivo externo; não armazena cópia integral de conteúdo de terceiros.
+7.1. **Fontes**: toda publicação exige entre 1 e 3 URLs de reportagens de veículos cadastrados. A Plataforma classifica automaticamente o tipo de peça e pode recusar URLs de opinião, editorial, blog, rede social ou agregador. A Plataforma registra hash e metadados da fonte e, quando disponível, link para arquivo externo; não exige trecho citado pelo autor e não armazena cópia integral de conteúdo de terceiros.
 
 7.2. **Tag de tipo**: toda publicação exige uma tag: Reportagem, Análise ou Opinião.
 
-7.3. **Avaliação**: só Usuários verificados avaliam. Antes de votar, o Usuário deve abrir ao menos uma fonte e responder corretamente a duas perguntas geradas automaticamente a partir do texto da fonte. O voto é sobre fidelidade às fontes ("Fiel" ou "Distorce"), não sobre concordância com a opinião.
+7.3. **Avaliação**: Usuários com conta ativa avaliam. Antes de votar, o Usuário deve abrir ao menos uma fonte e responder corretamente a duas perguntas geradas automaticamente a partir do texto da fonte. O voto é sobre fidelidade às fontes ("Fiel" ou "Distorce"), não sobre concordância com a opinião. O selo de jornalista **não** é exigido para avaliar.
 
-7.4. **Comentários**: só Usuários verificados que cumpriram o questionário de leitura. Todo comentário carrega flag obrigatória (Concordo, Concordo parcialmente ou Discordo) e texto curto.
+7.4. **Comentários**: Usuários com conta ativa que cumpriram o questionário de leitura. Todo comentário carrega flag obrigatória (Concordo, Concordo parcialmente ou Discordo) e texto curto.
 
 7.5. **Filtro de qualidade**: votos e comentários passam por filtro automatizado que detecta padrões de ataque pessoal, idolatria, ação coordenada ou ausência de referência ao conteúdo. Itens rejeitados não são contabilizados nem publicados; o Usuário recebe o motivo e pode apelar com revisão humana.
 
@@ -205,6 +206,7 @@ Encarregado de dados (LGPD): Rafael de Lima Lucas — [A PREENCHER: e-mail do en
 
 | Versão | Data | Alteração |
 |---|---|---|
+| 1.1 | [A PREENCHER] | Conta ativa publica/avalia com fontes; selo de jornalista opcional; vocabulário de avaliação entre contas |
 | 1.0 | [A PREENCHER] | Versão inicial |
 
 ---

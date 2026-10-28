@@ -16,7 +16,7 @@ Sinais positivos (não requisitos): IFCN, Trust Project, JTI.
 
 ## Lote inicial — 2026-10-28
 
-Incluídos após checagem das quatro evidências públicas. Domínios e paths de opinião ficam no SQL.
+Incluídos após checagem das quatro evidências públicas. Domínios e paths de opinião ficam no SQL (`db/seeds/cadastro_veiculos.sql`).
 
 ### Brasil
 
@@ -48,9 +48,46 @@ Incluídos após checagem das quatro evidências públicas. Domínios e paths de
 | Agence France-Presse | FR | afp.com | IFCN (Fact Check) |
 | Deutsche Welle | DE | dw.com | — |
 
+## Lote 2 — 2026-10-28
+
+Seed: `db/seeds/cadastro_veiculos_lote2.sql`. Mesmos 4 critérios; BBC News e AP não se repetem (já no lote 1; `bbc.com/portuguese` cobre-se pelo domínio BBC).
+
+### Brasil
+
+| Veículo | País | Domínios | Sinais |
+|---|---|---|---|
+| UOL | BR | uol.com.br, noticias.uol.com.br | IFCN (Confere) |
+| Nexo Jornal | BR | nexojornal.com.br | Trust Project |
+| CNN Brasil | BR | cnnbrasil.com.br | — |
+| Poder360 | BR | poder360.com.br | Trust Project |
+| O Povo | BR | opovo.com.br | Trust Project |
+| Gazeta do Povo | BR | gazetadopovo.com.br | — |
+| GZH (Zero Hora) | BR | gauchazh.clicrbs.com.br, clicrbs.com.br | — |
+
+### Portugal e mundo
+
+| Veículo | País | Domínios | Sinais |
+|---|---|---|---|
+| PÚBLICO | PT | publico.pt | — |
+| CNN | US | cnn.com, edition.cnn.com | — |
+| The Wall Street Journal | US | wsj.com | — |
+| Bloomberg News | US | bloomberg.com | — |
+| ProPublica | US | propublica.org | Trust Project |
+| USA TODAY | US | usatoday.com | IFCN |
+| CBS News | US | cbsnews.com | — |
+| TIME | US | time.com | — |
+| Al Jazeera English | QA | aljazeera.com | — |
+| The Economist | GB | economist.com | — |
+| CBC News | CA | cbc.ca | — |
+| ABC News (Australia) | AU | abc.net.au | — |
+| The Globe and Mail | CA | theglobeandmail.com | — |
+| DER SPIEGEL | DE | spiegel.de | — |
+
+Nota CNN Brasil: política de correções documentada pela prática pública “ERRAMOS” e pelo manifesto “Fatos Primeiro”; canal `erro@cnnbrasil.com.br` também é citado em páginas institucionais (algumas só em subdomínios de staging).
+
 ## Checagem das evidências (2026-10-28)
 
-HTTP nas URLs de `criteria` (GET com follow-redirect):
+HTTP nas URLs de `criteria` do lote 1 (GET com follow-redirect):
 
 | Resultado | O que |
 |---|---|
@@ -64,14 +101,15 @@ Histórico: `outlet_changes` com ação `criteria_updated` para AFP e Guardian.
 
 ```sh
 MSYS_NO_PATHCONV=1 docker exec jcf-db psql -U jcf -d jcf -v ON_ERROR_STOP=1 -f /seeds/cadastro_veiculos.sql
+MSYS_NO_PATHCONV=1 docker exec jcf-db psql -U jcf -d jcf -v ON_ERROR_STOP=1 -f /seeds/cadastro_veiculos_lote2.sql
 ```
 
-O script é idempotente (`ON CONFLICT DO NOTHING`). Novos lotes entram em arquivos
-`cadastro_veiculos_YYYY-MM-DD.sql` ou em nova seção deste documento, com justificativa
+Os scripts são idempotentes (`ON CONFLICT DO NOTHING`). Novos lotes entram em arquivos
+`cadastro_veiculos_*.sql` ou em nova seção deste documento, com justificativa
 pública em `outlet_changes`.
 
-## Fora deste lote (ainda)
+## Fora destes lotes (ainda)
 
-Veículos regionais e de outros idiomas entram quando os quatro critérios estiverem
-documentados. Exemplos a avaliar: The Hindu, Asahi Shimbun, Clarín, Folha de Portugal /
-Público, The Globe and Mail, Al Jazeera English, Bloomberg, Wall Street Journal, Nexo Jornal.
+Veículos entram quando os quatro critérios estiverem documentados com URL estável.
+Exemplos a avaliar: The Hindu, Asahi Shimbun, Clarín, The Intercept Brasil,
+Politico, South China Morning Post, NBC News (página nacional pública de padrões).

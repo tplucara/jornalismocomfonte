@@ -1,6 +1,6 @@
 # Política de Privacidade — Jornalismo com Fonte
 
-**Versão 1.0** · Vigente a partir de [A PREENCHER: data de publicação]
+**Versão 1.1** · Vigente a partir de [A PREENCHER: data de publicação]
 **Controlador**: Anvil Software LTDA, CNPJ 45.592.167/0001-27
 **Encarregado de dados (DPO)**: Rafael de Lima Lucas — [A PREENCHER: e-mail do encarregado]
 
@@ -8,10 +8,10 @@
 
 ## Resumo em linguagem simples
 
-- Coletamos **o mínimo**: o que a lei exige e o que é indispensável para verificar que você é jornalista e para você entrar na conta.
+- Coletamos **o mínimo**: o necessário para login, obrigações legais e, se você pedir, o selo opcional de jornalista.
 - **Leitores sem conta**: não coletamos dados pessoais de quem só lê. Guardamos apenas logs de acesso exigidos por lei, por 6 meses, e nunca os tornamos públicos.
-- **Documentos de verificação** (registro, comprovante de vínculo, portfólio) são analisados e **descartados após a decisão**. Guardamos só um hash e a marca "verificado".
-- O que aparece publicamente no seu perfil: **nome, foto, frase de impacto e reputação**. Nada mais.
+- **Documentos de verificação** (opcionais: registro, comprovante de vínculo, portfólio) são analisados e **descartados após a decisão**. Guardamos só um hash e a marca "verificado" ou a recusa.
+- O que aparece publicamente no seu perfil: **nome, foto, frase de impacto, reputação** e, se houver, o selo de jornalista. Nada mais.
 - **Não rastreamos** comportamento, **não usamos** cookies de terceiros, **não fazemos** fingerprinting e **não vendemos** dados.
 - A publicidade é **contextual** (pelo tema da página), sem perfil.
 - Você pode acessar, corrigir, portar e excluir seus dados a qualquer momento pelo canal do encarregado.
@@ -20,7 +20,7 @@
 
 ## 1. A quem esta política se aplica
 
-A todos que usam o Jornalismo com Fonte: **Jornalistas** (com conta verificada) e **Leitores** (sem conta). Onde houver diferença, indicamos.
+A todos que usam o Jornalismo com Fonte: **Usuários com conta** (autores e avaliadores) e **Leitores** (sem conta). Onde houver diferença, indicamos.
 
 ## 2. Que dados coletamos e por quê
 
@@ -33,7 +33,7 @@ A todos que usam o Jornalismo com Fonte: **Jornalistas** (com conta verificada) 
 
 Não usamos cookies de rastreamento para Leitores. Usamos apenas o estritamente necessário para servir a página (por exemplo, preferência de tema claro/escuro e modo para daltonismo, armazenadas no seu navegador).
 
-### 2.2 Jornalistas (com conta)
+### 2.2 Usuários com conta
 
 | Dado | Finalidade | Base legal | Retenção |
 |---|---|---|---|
@@ -41,7 +41,7 @@ Não usamos cookies de rastreamento para Leitores. Usamos apenas o estritamente 
 | Senha (apenas hash, nunca em texto) | Autenticação | Execução de contrato | Enquanto a conta existir |
 | Nome, foto de perfil, frase de impacto | Identificação pública do autor | Execução de contrato | Enquanto a conta existir |
 | Declaração de maioridade e aceite dos documentos legais (versão, data, identificador de sessão) | Comprovar elegibilidade e consentimento | Obrigação legal e execução de contrato | Prazo prescricional após encerramento da conta |
-| Documentos de verificação profissional (registro, comprovante de vínculo, links de portfólio) | Verificar que você é jornalista | Execução de contrato e legítimo interesse em prevenir fraude | **Descartados após a decisão.** Guardamos apenas hash do documento e flag "verificado" ou "recusado" com motivo |
+| Documentos de verificação profissional (opcional: registro, comprovante de vínculo, links de portfólio) | Conceder o selo opcional "jornalista verificado" (identidade, não conteúdo) | Execução de contrato e legítimo interesse em prevenir fraude de identidade | **Descartados após a decisão.** Guardamos apenas hash do documento e flag "verificado" ou "recusado" com motivo |
 | Conteúdo publicado, avaliações, comentários, votos | Prestar o serviço | Execução de contrato | Enquanto a conta existir; depois, placeholder e registros de auditoria pelo prazo legal |
 | Registros de auditoria (quem, quando, identificador de sessão/IP, versão) de publicação, edição, avaliação, comentário, apelação | Cumprir Marco Civil e garantir rastreabilidade de autoria | Obrigação legal | Logs de acesso: 6 meses. Registros de autoria: prazo prescricional das ações cíveis e penais |
 | Reputação (Autor e Avaliador) | Funcionalidade do serviço | Execução de contrato | Enquanto a conta existir |
@@ -54,7 +54,7 @@ Opinião expressa em artigos é conteúdo publicado voluntariamente pelo autor, 
 
 ## 3. O que aparece publicamente
 
-**Jornalistas**: nome, foto de perfil, frase de impacto, reputação (Autor e Avaliador), selo "jornalista verificado", conteúdo publicado, avaliações e comentários associados ao nome.
+**Usuários com conta**: nome, foto de perfil, frase de impacto, reputação (Autor e Avaliador), selo "jornalista verificado" **somente se concedido**, conteúdo publicado, avaliações e comentários associados ao nome.
 
 **Nunca público**: e-mail, documentos de verificação, hash de documentos, registros de acesso, registros de auditoria, motivo de recusa de verificação, apelações.
 
@@ -156,6 +156,7 @@ Contato legal geral: [A PREENCHER: e-mail de contato legal]
 
 | Versão | Data | Alteração |
 |---|---|---|
+| 1.1 | [A PREENCHER] | Conta para publicar; documentos de verificação opcionais (selo) |
 | 1.0 | [A PREENCHER] | Versão inicial |
 
 ---
